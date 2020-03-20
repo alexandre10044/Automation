@@ -1,0 +1,18 @@
+  - hosts: postgresql
+    remote_user: root
+
+  - hosts: redis
+    remote_user: root
+
+  - hosts: worker
+    remote_user: root
+
+  - hosts: poll
+    remote_user: root
+    roles:
+     - poll
+
+  - hosts: result
+    remote_user: root
+    roles:
+     - result

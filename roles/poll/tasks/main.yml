@@ -1,0 +1,10 @@
+- name: Copy
+  copy:
+    src: ../../../poll/
+    dest: /poll/
+- name: Install python
+  apt: name=python
+- name: Run app.py
+  shell: chdir=/poll/ pip install -r requirements.txt
+- name: Run app.py
+  shell: python app.py&
