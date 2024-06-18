@@ -1,0 +1,23 @@
+#[servers]
+#postgresql ansible_ssh_host=142.93.140.16
+#redis ansible_ssh_host=104.248.80.203
+#worker ansible_ssh_host=142.93.133.75
+#poll ansible_ssh_host=133.209.88.78
+#result ansible_ssh_host=178.62.226.6
+all:
+ children:
+  postgresql:
+   hosts:
+    104.248.80.203
+  redis:
+   hosts:
+    104.248.88.104
+  worker:
+   hosts:
+    142.93.133.75
+  poll:
+   hosts:
+    134.209.88.78
+  result:
+   hosts:
+    178.62.226.6

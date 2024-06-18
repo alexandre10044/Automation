@@ -1,0 +1,45 @@
+- name: Copy
+  copy:
+    src: ../../result/
+    dest: /result/
+- name: Update the apt package index
+  become: yes
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    force_apt_get: yes
+- name: Install Packages
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - build-essential
+    - npm
+    - nodejs-legacy
+    - git
+    - mcrypt
+    - nginx
+    - curl
+- name: NODE | Install npm deps
+  shell: npm i
+  register: npm_finished
+  failed_when: '"ERR!" in npm_finished.stderr'
+  when: git_finished.changed
+  args:
+    chdir: /result/
+- name: NODE | Install pm2
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+- name: NODE | Stop APP
+  shell: pm2 stop app
+  args:
+    chdir: /result/
+  ignore_errors: yes
+- name: NODE | Start APP
+  shell: pm2 start server.js --name server
+  args:
+    chdir: /result/
+  ignore_errors: yes
+  when: npm_finished.changed
